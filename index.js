@@ -1,95 +1,129 @@
-const Discord = require("discord.js");
-const YTDL = require("ytdl-core");
 
-const TOKEN = "NDEzODA4Njg1Mzk2MTMxODQz.DWeORA.TFhptVcpfgfRvz9fu8Cpji8ytow";
-const PREFIX = "!";
-
-
-var bot = new Discord.Client();
-var servers = {};
+    const Discord = require('discord.js');
+    const economy = require('discord-eco');
+    const fs = require("fs");
 
 
 
 
-
-bot.on("guildMemberAdd", function(member) {
-  member.guild.channels.find("name", "general").sendMessage(member.toString()+ "Welcome to our server!");
-
-  member.addRole(member.guild.roles.find("name", "Member"));
-});
+    const client = new Discord.Client();
 
 
-
-var fortunes = [
-
-"Option1",
-"Option2",
+    client.on('message', message => {
 
 
-]
-
-
-
-var money = [
-  "£10"
-
-
-]
-
-bot.on("ready", function() {
-  console.log("Ready");
-});
-
-bot.on("message", function(message) {
-  if (message.author.equals(bot.user)) return;
-
-
-
-  if (!message.content.startsWith(PREFIX)) return;
-
-
-
-  var args = message.content.substring(PREFIX.length).split(" ");
-
-  switch (args[0].toLowerCase()) {
-
-
-    case "shop":
-    var embed = new Discord.RichEmbed()
-    .addField("Shop")
-    .addField("Please choose an option...")
-    .addField("To buy 'test' then type ```!test```")
-    .setColor(0x00ffff)
-      message.channel.sendEmbed(embed);
-      break;
-
-      case "test":
-      var embed = new Discord.RichEmbed()
-      .addField("You bought 'test' for ${money}")
-      .setColor(0x00ffff)
-      message.channel.sendEmbed(embed);
-      break;
-
-
-
-  ///    case "8ball":
-  ///    if (args[1]) {
-  ///      message.channel.sendMessage(fortunes[Math.floor(Math.random() * fortunes.length)]);
-
-    ///        } else {
-    ///          message.channel.sendMessage("")
-    ///        }
-    ///  break;
+        let prefix = '!';
 
 
 
 
+        if (message.content.toUpperCase() === `${prefix}BALANCE`) {
 
-    default:
-      message.channel.sendMessage("Invaild Command!")
-   }
-
-});
+            economy.fetchBalance(message.author.id).then((i) => {
+                message.channel.send(`**Balance:** ${i.money}`);
+            })
 
 
-bot.login(TOKEN);
+        }
+
+        if (message.content.toUpperCase() === `${prefix}HELP`) {
+          message.channel.send("Type !shop for to get started!")
+        }
+
+        // Example: Adding Money To A User
+        if (message.content.toUpperCase() === `${prefix}ADD 500`) {
+
+            economy.updateBalance(message.author.id, 500).then((i) => {
+                message.channel.send(`**You got ¥500!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}ADD 100`) {
+
+            economy.updateBalance(message.author.id, 100).then((i) => {
+                message.channel.send(`**You got ¥100!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}ADD 5123`) {
+
+            economy.updateBalance(message.author.id, 5123).then((i) => {
+                message.channel.send(`**You got ¥5123!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+
+        // Example: Removing Money From A User
+        if (message.content.toUpperCase() === `${prefix}PITEM1`) {
+
+            economy.updateBalance(message.author.id, -20).then((i) => {
+                message.channel.send(`**You paid ¥20 for pitem1!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}PITEM2`) {
+
+            economy.updateBalance(message.author.id, -35).then((i) => {
+                message.channel.send(`**You paid ¥35 for pitem2!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}PITEM3`) {
+
+            economy.updateBalance(message.author.id, -40).then((i) => {
+                message.channel.send(`**You paid ¥40 for pitem3!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}PITEM4`) {
+
+            economy.updateBalance(message.author.id, -45).then((i) => {
+                message.channel.send(`**You paid ¥45 for pitem4!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+        if (message.content.toUpperCase() === `${prefix}PITEM5`) {
+
+            economy.updateBalance(message.author.id, -50).then((i) => {
+                message.channel.send(`**You paid ¥50 for pitem5!**\n**New Balance:** ${i.money}`);
+            })
+
+        }
+
+
+        if (message.content.toUpperCase() === `${prefix}SHOP`) {
+          var embed = new Discord.RichEmbed()
+              .setTitle("Shop:")
+              .setDescription("To buy and item type !pitem<number> in our server!\nYou can currently choose from 4 items, all costing a different price.")
+              .setColor(0x00ffff)
+          message.channel.sendMessage("I have Private Messaged you what is in the shop.")
+          message.author.send({embed})
+        }
+
+        if (message.content.toUpperCase() === `${prefix}INVENTORY`) {
+          message.channel.sendMessage("Test")
+        }
+
+
+        if (message.content.toUpperCase() === `${prefix}SAVEINV`)
+        {
+          var string = "{id: 4, name:'Volley'}"
+          var parseObject = JSON.parse(string)
+          console.log(parseObject.id); //4
+          console.log(parseObject.name); //Volley
+          var inv = JSON.parse(fs.readFileSync("./points.json", "utf8"));
+          message.channel.sendMessage("Done!")
+        }
+
+
+
+
+
+
+
+    });
+
+
+
+
+        client.login('NDEzODA4Njg1Mzk2MTMxODQz.DWeORA.TFhptVcpfgfRvz9fu8Cpji8ytow')

@@ -100,24 +100,6 @@
           message.author.send({embed})
         }
 
-        if (message.content.toUpperCase() === `${prefix}INVENTORY`) {
-          message.channel.sendMessage("Test")
-        }
-
-
-        if (message.content.toUpperCase() === `${prefix}SAVEINV`)
-        {
-          var string = "{id: 4, name:'Volley'}"
-          var parseObject = JSON.parse(string)
-          console.log(parseObject.id); //4
-          console.log(parseObject.name); //Volley
-          var inv = JSON.parse(fs.readFileSync("./points.json", "utf8"));
-          message.channel.sendMessage("Done!")
-        }
-
-
-
-
 
 
 
